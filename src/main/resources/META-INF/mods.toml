@@ -1,0 +1,26 @@
+
+modLoader="javafml"
+loaderVersion="[36,)"
+license="MIT"
+[[mods]]
+modId="bucketofsilverfish"
+version="0.1a"
+displayName="BucketOfSilverfish"
+logoFile="examplemod.png"
+credits="Thanks for this mod goes to zKryle"
+authors="zKryle"
+description='''
+Silverfish into buckets! Simple as that :D
+'''
+[[dependencies.examplemod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.examplemod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
