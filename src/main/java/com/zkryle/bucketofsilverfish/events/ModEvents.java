@@ -27,8 +27,10 @@ public class ModEvents{
         if(event.getPlayer().getItemInHand( event.getHand() ).getItem() == Items.BUCKET.getItem()){
             if(event.getTarget().getEntity() instanceof SilverfishEntity){
                     fillBucket( ItemInit.BUCKET_OF_SILVERFISH.get().getDefaultInstance() , event.getPlayer() , event.getTarget(), event.getWorld(), event.getHand() );
+                event.setCanceled( true );
             }else if(event.getTarget().getEntity() instanceof EndermiteEntity){
                 fillBucket( ItemInit.BUCKET_OF_ENDERMITE.get().getDefaultInstance() , event.getPlayer() , event.getTarget(), event.getWorld(), event.getHand());
+                event.setCanceled( true );
             }
         }
     }
