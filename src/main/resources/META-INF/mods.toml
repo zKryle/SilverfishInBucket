@@ -4,9 +4,9 @@ loaderVersion="[36,)"
 license="MIT"
 [[mods]]
 modId="bucketofsilverfish"
-version="0.1a"
+version="0.1"
 displayName="BucketOfSilverfish"
-logoFile="examplemod.png"
+logoFile="Modthumbnail.png"
 credits="Thanks for this mod goes to zKryle"
 authors="zKryle"
 description='''

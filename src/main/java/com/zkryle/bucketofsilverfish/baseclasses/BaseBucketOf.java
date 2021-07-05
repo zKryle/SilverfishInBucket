@@ -1,14 +1,16 @@
 package com.zkryle.bucketofsilverfish.baseclasses;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.monster.EndermiteEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
@@ -42,25 +44,51 @@ public class BaseBucketOf extends Item{
     }
 
     @Override
-    public ActionResult <ItemStack> use( World level , PlayerEntity player , Hand hand ){
+    public ActionResultType onItemUseFirst( ItemStack stack , ItemUseContext context ){
+        World level = context.getLevel();
+        PlayerEntity player = context.getPlayer();
+        Hand hand = context.getHand();
         RayTraceResult rtresult = getPlayerPOVHitResult( level , player , RayTraceContext.FluidMode.NONE );
         BlockRayTraceResult brtresult = (BlockRayTraceResult) rtresult;
         BlockPos pos = brtresult.getBlockPos();
         Direction direction = brtresult.getDirection();
-        BlockPos pos1 = pos.relative(direction);
-        ItemStack itemstack = player.getItemInHand(hand);
-        if (level.mayInteract(player, pos) && player.getItemInHand( hand ) != Items.BUCKET.getDefaultInstance() && player.mayUseItemAt( pos1, direction, itemstack )){
+        BlockPos pos1 = pos.relative( direction );
+        ItemStack itemstack = player.getItemInHand( hand );
+        if(level.mayInteract( player , pos ) && player.getItemInHand( hand ) != Items.BUCKET.getDefaultInstance() && player.mayUseItemAt( pos1 , direction , itemstack )){
             switch(type){
                 case "silverfish":
-                    SilverfishEntity entity = new SilverfishEntity( EntityType.SILVERFISH, level);
-                    entity.setPos( pos.getX()+0.2f, pos.getY()+1, pos.getZ()+0.2f);
-                    if (!level.isClientSide()){
+                    SilverfishEntity entity = new SilverfishEntity( EntityType.SILVERFISH , level );
+                    entity.setPos( pos.getX() + 0.5f , pos.getY() + 1 , pos.getZ() + 0.5f );
+                    if(!player.isCreative()){
+                        player.setItemInHand( hand , Items.BUCKET.getDefaultInstance() );
+                    }
+                    player.playSound( SoundEvents.BUCKET_EMPTY , 1.0f , 1.0f );
+                    if(!level.isClientSide()){
                         level.addFreshEntity( entity );
-                        return ActionResult.success( Items.BUCKET.getDefaultInstance() );
+                        return ActionResultType.SUCCESS;
+                    }
+                    break;
+                case "endermite":
+                    int rand = (int) (Math.random() * 5);
+                    if (rand == 3){
+                        EndermiteEntity entity2 = new EndermiteEntity( EntityType.ENDERMITE , level );
+                        entity2.setPos( pos.getX() + 0.5f , pos.getY() + 1 , pos.getZ() + 0.5f );
+                        if(!player.isCreative()){
+                            player.setItemInHand( hand , Items.BUCKET.getDefaultInstance() );
+                        }
+                        player.playSound( SoundEvents.BUCKET_EMPTY , 1.0f , 1.0f );
+                        if(!level.isClientSide()){
+                            level.addFreshEntity( entity2 );
+                            return ActionResultType.SUCCESS;
+                        }
+                    } else {
+                        level.playSound( null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f  );
+                        level.addParticle( ParticleTypes.PORTAL , pos.getX() + 0.5f, pos.getY() + 1, pos.getZ() + 0.5f, 0, 0, 0);
+                        player.setItemInHand( hand , Items.BUCKET.getDefaultInstance() );
                     }
                     break;
             }
         }
-        return ActionResult.pass( itemstack );
+        return ActionResultType.PASS;
     }
 }
