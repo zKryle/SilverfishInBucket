@@ -70,21 +70,27 @@ public class BaseBucketOf extends Item{
                     break;
                 case "endermite":
                     int rand = (int) (Math.random() * 5);
-                    if (rand == 3){
-                        EndermiteEntity entity2 = new EndermiteEntity( EntityType.ENDERMITE , level );
-                        entity2.setPos( pos.getX() + 0.5f , pos.getY() + 1 , pos.getZ() + 0.5f );
-                        if(!player.isCreative()){
+                    EndermiteEntity entity2 = new EndermiteEntity( EntityType.ENDERMITE , level );
+                    entity2.setPos( pos.getX() + 0.5f , pos.getY() + 1 , pos.getZ() + 0.5f );
+                    if(!player.isCreative()){
+                        if(rand == 3){
+                            player.setItemInHand( hand , Items.BUCKET.getDefaultInstance() );
+                            player.playSound( SoundEvents.BUCKET_EMPTY , 1.0f , 1.0f );
+                            if(!level.isClientSide()){
+                                level.addFreshEntity( entity2 );
+                                return ActionResultType.SUCCESS;
+                            }
+                        }else{
+                            level.playSound( null , pos , SoundEvents.ENDERMAN_TELEPORT , SoundCategory.HOSTILE , 1.0f , 1.0f );
+                            level.addParticle( ParticleTypes.PORTAL , pos.getX() + 0.5f , pos.getY() + 1 , pos.getZ() + 0.5f , 0 , 0 , 0 );
                             player.setItemInHand( hand , Items.BUCKET.getDefaultInstance() );
                         }
+                    } else {
                         player.playSound( SoundEvents.BUCKET_EMPTY , 1.0f , 1.0f );
                         if(!level.isClientSide()){
                             level.addFreshEntity( entity2 );
                             return ActionResultType.SUCCESS;
                         }
-                    } else {
-                        level.playSound( null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.HOSTILE, 1.0f, 1.0f  );
-                        level.addParticle( ParticleTypes.PORTAL , pos.getX() + 0.5f, pos.getY() + 1, pos.getZ() + 0.5f, 0, 0, 0);
-                        player.setItemInHand( hand , Items.BUCKET.getDefaultInstance() );
                     }
                     break;
             }
