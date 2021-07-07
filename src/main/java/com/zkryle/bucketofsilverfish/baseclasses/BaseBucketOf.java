@@ -1,5 +1,6 @@
 package com.zkryle.bucketofsilverfish.baseclasses;
 
+import com.zkryle.bucketofsilverfish.core.configfiles.Config;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.EndermiteEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
@@ -73,7 +74,7 @@ public class BaseBucketOf extends Item{
                     EndermiteEntity entity2 = new EndermiteEntity( EntityType.ENDERMITE , level );
                     entity2.setPos( pos.getX() + 0.5f , pos.getY() + 1 , pos.getZ() + 0.5f );
                     if(!player.isCreative()){
-                        if(rand == 3){
+                        if(rand == 3 || !Config.endermite_escaping.get()){
                             player.setItemInHand( hand , Items.BUCKET.getDefaultInstance() );
                             player.playSound( SoundEvents.BUCKET_EMPTY , 1.0f , 1.0f );
                             if(!level.isClientSide()){
