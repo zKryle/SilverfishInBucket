@@ -39,7 +39,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.1'
+version = '0.2-fix'
 group = 'com.zkryle.bucketofsilverfish' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'BucketofSilverfish-1.16.5'
 
